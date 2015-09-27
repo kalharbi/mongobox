@@ -3,9 +3,7 @@ import mui from "material-ui";
 
 let ThemeManager = new mui.Styles.ThemeManager();
 
-import {
-  CardActions, CardHeader, CardText, FontIcon, Avatar, Card, Styles, RaisedButton
-} from "material-ui";
+import { CardHeader, CardText, Avatar, Card } from "material-ui";
 let Colors = mui.Styles.Colors;
 
 class Result extends React.Component {
@@ -19,27 +17,23 @@ class Result extends React.Component {
   render() {
     return (
       <Card className="ResultCard" initiallyExpanded={true}>
-        <CardHeader avatar={<Avatar backgroundColor={Colors.green500}></Avatar>}
+        <CardHeader avatar={<Avatar
+            backgroundColor={this.props.result.length > 0? Colors.green500 : Colors.red500}>
+        </Avatar>}
           showExpandableButton={true}
-          subtitle="10 documents were found"
-          title="db.collection.find({a:10, b:'value'})">
+          subtitle= {this.props.result.length + " documents found"}
+          title={"db.collection.find(" + this.props.submittedQuery + ")"}>
         </CardHeader>
         <CardText expandable={true}>
-          {JSON.stringify({
-            obj: 20
-          })}
+          <pre id={"json-block-" + this.props.order} className="json-block">
+            {JSON.stringify(this.props.result, null, 2)}
+          </pre>
         </CardText>
-        <CardActions expandable={true}>
-          <div style={Styles.container}>
-            <RaisedButton disabled={true}>
-              <FontIcon className="material-icons">content_copy</FontIcon>
-            </RaisedButton>
-          </div>
-        </CardActions>
       </Card>
     );
   }
 }
+
 Result.childContextTypes = {
   muiTheme: React.PropTypes.object
 };
